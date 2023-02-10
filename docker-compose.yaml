@@ -1,0 +1,47 @@
+version: '3.7'
+# PHP-FPM & nginx Web Server
+services:
+  php-7-2-fpm:
+    container_name: php-7-2-fpm
+    tty: true
+    restart: unless-stopped
+    build: 
+      context: .
+      target: php-7-2-build
+      dockerfile: php-7-2-fpm.Dockerfile
+      args:
+        - APP_ENV=${APP_ENV}
+      labels:
+        ewc.name: "Web App"
+        ewc.description: "PHP-FPM Web App"
+        ewc.php.version: "7.2"
+        ewc.label-with-empty-value: ""
+    image: ewc2020/web:php-7-2-fpm
+    environment:
+        - APP_ENV=${APP_ENV}
+        - APP_PORT=${APP_PORT}
+        - APP_PORT_SSL=${APP_PORT_SSL}
+    working_dir: /var/www
+    volumes:
+      - ./public_html:/var/www/public
+      - ./docker-files/php/local.ini:/usr/local/etc/php.ini
+    networks:
+      - webapp_network
+
+  nginx-web-server:
+    container_name: nginx-web-server
+    tty: true
+    restart: unless-stopped
+    image: nginx:1.19-alpine 
+    ports:
+      - ${APP_PORT}:80
+      - ${APP_PORT_SSL}:443
+    volumes:
+      - ./public_html:/var/www/public
+      - ./docker-files/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - webapp_network
+
+networks:
+  webapp_network:
+
