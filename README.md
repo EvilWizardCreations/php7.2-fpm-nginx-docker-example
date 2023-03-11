@@ -1,6 +1,6 @@
-# PHP 7.4 & Apache Dockerfile Example
+# PHP-FPM 7.2 & Apache Dockerfile Example
 
-A base PHP 7.4 Apache 2 image[^docker_pull_cmd_note] for demonstrating legacy projects available at [EWC Docker Hub](https://hub.docker.com/r/ewc2020/web).
+A base PHP-FPM 7.2 image[^docker_pull_cmd_note] for demonstrating legacy projects available at [EWC Docker Hub](https://hub.docker.com/r/ewc2020/web).
 
 An old version of ***PHP*** that some codebase sites still require to emulate a ***production*** environment to run in.
 
@@ -138,7 +138,7 @@ sudo docker exec -it php-7-2-fpm /bin/bash
 
 # Disclaimer
 
-This Apache2 + PHP 7.4 build environment should ***NOT*** be used anywhere near a ***production*** environment. This build is for showcasing legacy systems that simple would not run in modern environments & as such it is littered with security holes and exploitation's.
+This Nginx + PHP-FPM 7.2 build environment should ***NOT*** be used anywhere near a ***production*** environment. This build is for showcasing legacy systems that simple would not run in modern environments & as such it is littered with security holes and exploitation's.
 
 [^docker_pull_cmd_note]: Use `docker pull ewc2020/web:php-7-2-fpm` to get a copy of the image.
 
