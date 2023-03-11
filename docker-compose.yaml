@@ -1,6 +1,9 @@
 version: '3.7'
+
+# Services/Containers to orchestrate in this composition
 # PHP-FPM & nginx Web Server
 services:
+  # PHP 7.2 FPM Image Container
   php-7-2-fpm:
     container_name: php-7-2-fpm
     tty: true
@@ -28,6 +31,7 @@ services:
     networks:
       - webapp_network
 
+  # Nginx Webserver Image Container
   nginx-web-server:
     container_name: nginx-web-server
     tty: true
@@ -42,6 +46,7 @@ services:
     networks:
       - webapp_network
 
+# Custom network for composed containers to communicate on
 networks:
   webapp_network:
-
+    driver: bridge
