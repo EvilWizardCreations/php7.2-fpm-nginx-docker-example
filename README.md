@@ -1,4 +1,4 @@
-# PHP-FPM 7.2 & Apache Dockerfile Example
+# PHP-FPM 7.2 Dockerfile Example
 
 A base PHP-FPM 7.2 image[^docker_pull_cmd_note] for demonstrating legacy projects available at [EWC Docker Hub](https://hub.docker.com/r/ewc2020/web).
 
