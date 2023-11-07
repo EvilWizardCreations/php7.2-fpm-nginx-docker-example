@@ -9,6 +9,17 @@ services:
     container_name: php-7-2-fpm
     tty: true
     restart: unless-stopped
+    build: 
+      context: .
+      target: ${PHP72_FPM_DOCKER_BUILD_TARGET}
+      dockerfile: ${DOCKER_BUILD_FILE}
+      args:
+        - NPM_VERSION=${NPM_VERSION}
+        - APP_ENV=${APP_ENV}
+      labels:
+        ewc.name: "Web App"
+        ewc.description: "${PHP72_FPM_DOCKER_BUILD_DESC}"
+        ewc.php.version: "${PHP_VERSION}"
     image: ${PHP72_FPM_DOCKER_IMAGE}:${PHP72_FPM_DOCKER_IMAGE_TAG}
     environment:
         - NPM_VERSION=${NPM_VERSION}
