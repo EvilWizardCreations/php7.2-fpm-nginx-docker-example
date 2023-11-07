@@ -28,18 +28,42 @@ PHP Extensions:
 - zip
 - yaml
 
-## Build Image
+## Build & Compose Up
+
+Note that the `php-7.2-fpm` is the Docker Compose Service to ***Build***.
+
+There is a build script included that uses the local `.env` file & an [Evil Wizard Creations Protocol](https://bitbucket.org/evilwizardcreations/ewc-protocols) that makes this much simpler.
+
+```bash
+build-up-php-7.2-fpm.sh
+```
+
+Alternatively there is the *full Procedure*.
+
+1. Build the Image using the `docker-compose-build.yaml` configuration.
+
+    ```bash
+    docker-compose -f ./docker-compose-build.yaml build --no-cache php-5-6-cli
+    ```
+
+1. Compose *Up* using the `docker-compose-build.yaml` configuration will use the new built Image and `-d` to *detach*.
+
+    ```bash
+    docker-compose -f ./docker-compose-build.yaml up -d
+    ```
+
+## Build Image The Long Way
 
 Build the ***Docker Image*** without using ***cached*** versions of previous image build stages.
 
 ```bash
 sudo docker build \
     -f php-7-2-fpm.Dockerfile \
-    --target php-7-2-build \
+    --target build-php-7-2-fpm \
     --build-arg APP_ENV=local \
     --build-arg NPM_VERSION=7.24.2 \
     --no-cache \
-    -t php-7-2-fpm:latest \
+    -t php-7.2-fpm:latest \
     .
 ```
 
@@ -49,7 +73,7 @@ sudo docker build \
 
     To specify the *filename* to ***build*** otherwise it is expected to be named `Dockerfile`.
 
-- Using `--target php-7-2-build`
+- Using `--target build-php-7-2-fpm`
 
     To select the ***build target stage***[^multi_stage_builds_note] from the *Dockerfile*.
     
@@ -67,7 +91,7 @@ sudo docker run \
     --network host \
     -v "$(pwd)"/public_html:/var/www/html \
     --name php-7-2-fpm \
-    php-7-2-fpm
+    php-7-2-fpm:latest
 ```
 
 **OR**
@@ -81,7 +105,7 @@ sudo docker run \
     -p 8080:80/tcp \
     -v "$(pwd)"/public_html:/var/www/html \
     --name php-7-2-fpm \
-    php-7-2-fpm
+    php-7-2-fpm:latest
 ```
 
 **N.B.**
@@ -110,26 +134,6 @@ sudo docker start php-7-2-fpm
 sudo docker stop php-7-2-fpm
 ```
 
-## Docker Compose
-
-A `docker-compose` configuration file is included to simplify the build & deployment of the image.
-
-### Build - No Cache
-
-This is only necessary when completely rebuilding the image to make sure all parts are rebuilt[^compose_name_note].
-
-```bash
-sudo docker-compose build --no-cache php-7-2-fpm
-```
-
-### Build & Up
-
-This will try to use a local version or rebuild the image with current context.
-
-```bash
-sudo docker-compose up --build -d
-```
-
 ## Connect To Container
 
 ```bash
@@ -140,7 +144,7 @@ sudo docker exec -it php-7-2-fpm /bin/bash
 
 This Nginx + PHP-FPM 7.2 build environment should ***NOT*** be used anywhere near a ***production*** environment. This build is for showcasing legacy systems that simple would not run in modern environments & as such it is littered with security holes and exploitation's.
 
-[^docker_pull_cmd_note]: Use `docker pull ewc2020/web:php-7-2-fpm` to get a copy of the image.
+[^docker_pull_cmd_note]: Use `docker pull ewc2020/web:php-7.2-fpm-latest` to get a copy of the image.
 
 [^npm_version_note]: Uses a `.env` ***build-arg*** called ***NPM_VERSION*** to specify the npm version.
 
